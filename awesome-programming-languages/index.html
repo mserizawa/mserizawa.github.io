@@ -119,7 +119,8 @@ if (!language) {
 $("option").prop("selected", false);
 $("option[value=" + language + "]").prop("selected", true);
 
-var markdownConverter = new showdown.Converter();
+var markdownConverter = new showdown.Converter(),
+    isChrome = window.navigator.userAgent.toLowerCase().indexOf("chrome") != -1;
 
 var diameter = 1170;
 
@@ -158,8 +159,12 @@ d3.json("json/" + language + ".json", function(error, root) {
       .attr("r", 2.6);
 
   node.on("mouseover", function(d) {
+        var fontSize = 10 * window.devicePixelRatio;
+        if (isChrome && window.devicePixelRatio < 2) {
+            fontSize = fontSize * 2;
+        }
         d3.select(this).select("text")
-          .style("font-size", 10 * window.devicePixelRatio + "px")
+          .style("font-size", fontSize + "px")
           .style("text-shadow", "0px 0px 10px #555");
         d3.select(this).select("circle").attr("r", 6.0);
         if (d.size) {
