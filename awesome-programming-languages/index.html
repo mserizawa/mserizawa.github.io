@@ -152,14 +152,14 @@ d3.json("json/" + language + ".json", function(error, root) {
       .attr("r", 2.6);
 
   node.on("mouseover", function(d) {
-        d3.select(this).select("text").style("font-size", "20px");
+        d3.select(this).select("text").style("font-size", 10 * window.devicePixelRatio + "px");
         d3.select(this).select("circle").attr("r", 6.0);
         if (d.size) {
           d3.select(this).style("cursor", "pointer");            
         }
       })
       .on("mouseout", function(d) {
-        d3.select(this).select("text").style("font-size", "6px");
+        d3.select(this).select("text").style("font-size", 3 * window.devicePixelRatio + "px");
         d3.select(this).select("circle").attr("r", 2.6);
       })
       .on("click", function(d) {
