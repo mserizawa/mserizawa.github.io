@@ -119,8 +119,7 @@ if (!language) {
 $("option").prop("selected", false);
 $("option[value=" + language + "]").prop("selected", true);
 
-var markdownConverter = new showdown.Converter(),
-    isChrome = window.navigator.userAgent.toLowerCase().indexOf("chrome") != -1;
+var markdownConverter = new showdown.Converter();
 
 var diameter = 1170;
 
@@ -159,18 +158,18 @@ d3.json("json/" + language + ".json", function(error, root) {
       .attr("r", 2.6);
 
   node.on("mouseover", function(d) {
-        var fontSize = 10 * window.devicePixelRatio;
-        if (isChrome && window.devicePixelRatio < 2) {
-            fontSize = 50;
-        }
-        d3.select(this).select("text").style("font-size", fontSize + "px");
+        d3.select(this).select("text")
+          .style("font-size", 10 * window.devicePixelRatio + "px")
+          .style("text-shadow", "0px 0px 10px #555");
         d3.select(this).select("circle").attr("r", 6.0);
         if (d.size) {
           d3.select(this).style("cursor", "pointer");
         }
       })
       .on("mouseout", function(d) {
-        d3.select(this).select("text").style("font-size", 3 * window.devicePixelRatio + "px");
+        d3.select(this).select("text")
+          .style("font-size", 3 * window.devicePixelRatio + "px")
+          .style("text-shadow", "none");
         d3.select(this).select("circle").attr("r", 2.6);
       })
       .on("click", function(d) {
@@ -179,13 +178,11 @@ d3.json("json/" + language + ".json", function(error, root) {
         }
       });
 
-  var textScale = isChrome && window.devicePixelRatio < 2 ? "scale(0.2)" : "";
-
   node.append("text")
       .attr("dy", "0.25em")
       .style("font-size", "6px")
       .attr("text-anchor", function(d) { return d.x < 180 ? "start" : "end"; })
-      .attr("transform", function(d) { return d.x < 180 ? "translate(8)" + textScale : "rotate(180)translate(-8)" + textScale; })
+      .attr("transform", function(d) { return d.x < 180 ? "translate(8)" : "rotate(180)translate(-8)"; })
       .text(function(d) { return d.name; });
 });
 
