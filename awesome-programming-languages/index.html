@@ -161,12 +161,12 @@ d3.json("json/" + language + ".json", function(error, root) {
   node.on("mouseover", function(d) {
         var fontSize = 10 * window.devicePixelRatio;
         if (isChrome && window.devicePixelRatio < 2) {
-            fontSize = 33;
+            fontSize = 50;
         }
         d3.select(this).select("text").style("font-size", fontSize + "px");
         d3.select(this).select("circle").attr("r", 6.0);
         if (d.size) {
-          d3.select(this).style("cursor", "pointer");            
+          d3.select(this).style("cursor", "pointer");
         }
       })
       .on("mouseout", function(d) {
@@ -179,7 +179,7 @@ d3.json("json/" + language + ".json", function(error, root) {
         }
       });
 
-  var textScale = isChrome && window.devicePixelRatio < 2 ? "scale(.3)" : "";
+  var textScale = isChrome && window.devicePixelRatio < 2 ? "scale(0.2)" : "";
 
   node.append("text")
       .attr("dy", "0.25em")
