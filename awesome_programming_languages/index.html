@@ -1,0 +1,197 @@
+<!DOCTYPE html>
+<meta charset="utf-8">
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css">
+<style>
+
+.node circle {
+  fill: #fff;
+  stroke: steelblue;
+  stroke-width: 1.5px;
+}
+
+.node {
+  font: 10px sans-serif;
+}
+
+.link {
+  fill: none;
+  stroke: #ccc;
+  stroke-width: 1.5px;
+}
+
+.container {
+  width: 1170px;
+}
+
+</style>
+<body>
+
+<div class="container">
+    <h1 class="page-header">Awesome {{ Programming Languages }}</h1>
+    <div class="row">
+        <div class="col-xs-2">
+            <select class="form-control">
+                <option value="awesome-javascript">JavaScript</option>
+                <option value="awesome-swift">Swift</option>
+                <option value="awesome-python">Python</option>
+                <option value="awesome-rust">Rust</option>
+                <option value="awesome-haskell">Haskell</option>
+                <option value="awesome-purescript">PureScript</option>
+                <option value="awesome-go">Go</option>
+                <option value="awesome-scala">Scala</option>
+                <option value="awesome-ruby">Ruby</option>
+                <option value="awesome-clojure">Clojure</option>
+                <option value="awesome-clojurescript">ClojureScript</option>
+                <option value="awesome-elixir" selected>Elixir</option>
+                <option value="awesome-elm">ELM</option>
+                <option value="awesome-erlang">Erlang</option>
+                <option value="awesome-lua">Lua</option>
+                <option value="awesome-cpp">C</option>
+                <option value="awesome-R">R</option>
+                <option value="awesome-d">D</option>
+                <option value="awesome-perl">Perl</option>
+                <option value="awesome-groovy">Groovy</option>
+                <option value="awesome-dart">Dart</option>
+                <option value="awesome-java">Java</option>
+                <option value="awesome-ocaml">OCaml</option>
+                <option value="awesome-coldfusion">ColdFusion</option>
+                <option value="awesome-fortran">FORTRAN</option>
+                <option value="awesome-dotnet">.NET</option>
+                <option value="awesome-php">PHP</option>
+                <option value="awesome-delphi">Delphi</option>
+                <option value="awesome-asm">ASM</option>
+                <option value="awesome-AutoHotkey">AutoHotkey</option>
+                <option value="awesome-AutoIt">AutoIt</option>
+                <option value="awesome-crystal">Crystal</option>
+                <option value="awesome-typescript">TypeScript</option>
+            </select>
+        </div>
+    </div>
+
+    <svg></svg>
+</div>
+
+<div id="modal-lib-detail" class="modal fade">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+        <h4 class="modal-title"></h4>
+      </div>
+      <div class="modal-body">
+        <p></p>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+        <button id="button-show-repo" data-repo-url="" type="button" class="btn btn-primary">View Repository</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script src="https://code.jquery.com/jquery-2.1.4.min.js"></script>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/js/bootstrap.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/d3/3.5.5/d3.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/showdown/1.3.0/showdown.js"></script>
+<script>
+
+window.onhashchange = function() {
+    location.reload();
+};
+
+var language = window.location.hash;
+if (!language) {
+    language = $("option:selected").val();
+    window.location.hash = language;
+} else {
+    language = language.substring(1);
+    if (!$("option[value=" + language + "]").length) {
+        language = $("option:selected").val();
+        window.location.hash = language;
+    }
+}
+$("option").prop("selected", false);
+$("option[value=" + language + "]").prop("selected", true);
+
+var markdownConverter = new showdown.Converter();
+
+var diameter = 1170;
+
+var tree = d3.layout.tree()
+    .size([360, diameter / 2 - 120])
+    .separation(function(a, b) { return (a.parent == b.parent ? 1 : 2) / a.depth; });
+
+var diagonal = d3.svg.diagonal.radial()
+    .projection(function(d) { return [d.y, d.x / 180 * Math.PI]; });
+
+var svg = d3.select("svg")
+    .attr("width", diameter)
+    .attr("height", diameter)
+  .append("g")
+    .attr("transform", "translate(" + diameter / 2 + "," + diameter / 2 + ")");
+
+d3.json("json/" + language + ".json", function(error, root) {
+  if (error) throw error;
+
+  var nodes = tree.nodes(root),
+      links = tree.links(nodes);
+
+  var link = svg.selectAll(".link")
+      .data(links)
+    .enter().append("path")
+      .attr("class", "link")
+      .attr("d", diagonal);
+
+  var node = svg.selectAll(".node")
+      .data(nodes)
+    .enter().append("g")
+      .attr("class", "node")
+      .attr("transform", function(d) { return "rotate(" + (d.x - 90) + ")translate(" + d.y + ")"; })
+
+  node.append("circle")
+      .attr("r", 2.6);
+
+  node.on("mouseover", function(d) {
+        d3.select(this).select("text").style("font-size", "20px");
+        d3.select(this).select("circle").attr("r", 6.0);
+        if (d.size) {
+          d3.select(this).style("cursor", "pointer");            
+        }
+      })
+      .on("mouseout", function(d) {
+        d3.select(this).select("text").style("font-size", "6px");
+        d3.select(this).select("circle").attr("r", 2.6);
+      })
+      .on("click", function(d) {
+        if (d.size) {
+          showModal(d);
+        }
+      });
+
+  node.append("text")
+      .attr("dy", "0.25em")
+      .style("font-size", "6px")
+      .attr("text-anchor", function(d) { return d.x < 180 ? "start" : "end"; })
+      .attr("transform", function(d) { return d.x < 180 ? "translate(8)" : "rotate(180)translate(-8)"; })
+      .text(function(d) { return d.name; });
+});
+
+function showModal(dt) {
+    $(".modal-title").text(dt.name);
+    $(".modal-body > p").html(markdownConverter.makeHtml(dt.description) || "<i>(no discriptions)</i>");
+    $("#button-show-repo").data("repo-url", dt.url);
+    $("#modal-lib-detail").modal();
+}
+
+$("#button-show-repo").click(function(e) {
+    if ($(this).data("repo-url")) {
+        window.open($(this).data("repo-url"));
+    }
+});
+
+$("select").change(function(e) {
+    window.location.hash = $("option:selected").val();
+});
+
+</script>
+
