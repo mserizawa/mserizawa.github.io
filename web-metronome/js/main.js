@@ -42,11 +42,17 @@ $('.js-toggle-click').on('click', function() {
     clearInterval(interval);
     interval = null;
     counter = 0;
+
+    path.data(pie([0, 1]))
+      .attr('d', arc)
+      .each(function (d) { this._current = d; });
   } else {
-    var duration = 60 / parseInt(tempoSlider.val()) * 1000;
-    duration = duration / 4 * parseInt($('select.rhythm-select.denominator').val());
+    var duration = 60 / parseInt(tempoSlider.val()) * 1000,
+        denominator = parseInt($('select.rhythm-select.denominator').val()),
+        numerator = parseInt($('select.rhythm-select.numerator').val());
+    duration = duration * (4 / denominator);
     interval = setInterval(function () {
-      if (counter % parseInt($('select.rhythm-select.numerator').val()) === 0) {
+      if ((counter % numerator) === 0) {
         co.pause();
         co.currentTime = 0;
         co.play();
@@ -55,19 +61,13 @@ $('.js-toggle-click').on('click', function() {
         ti.currentTime = 0;
         ti.play();
       }
-      counter++;
 
-      path.data(pie(dataset.lower))
+      var val = (counter % numerator + 1) / numerator;
+      path.data(pie([val, 1 - val]))
         .attr('d', arc)
         .each(function (d) { this._current = d; });
 
-      path = path.data(pie(dataset.upper));
-      path.transition().duration(duration).ease(d3.easeLinear)
-          .attrTween('d', function(a) {
-            var i = d3.interpolate(this._current, a);
-            this._current = i(0);
-            return function (t) { return arc(i(t)); };
-          });
+      counter++;
     }, duration);
   }
 });
