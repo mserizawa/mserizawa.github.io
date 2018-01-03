@@ -6,8 +6,8 @@ var ti = new Audio('sounds/ti.wav'),
 var tempoSlider = $('#tempo-slider').slider();
 
 // init d3
-var containerRect = d3.select('.js-donuts-container').node().getBoundingClientRect(),
-    width = containerRect.width,
+var containerRect = $('.js-donuts-container').width(),
+    width = $('.js-donuts-container').width(),
     height = width;
 
 var dataset = {

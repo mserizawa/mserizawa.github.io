@@ -1,10 +1,5 @@
-html, body {
-  /* width: 100%;
-  height: 100%; */
-}
-
-.mainContainer, .mainContainer .row, .mainContainer .col-md-6 {
-  /* height: 100%; */
+.margin-top-20 {
+  margin-top: 20px;
 }
 
 path.color0 {
@@ -25,8 +20,14 @@ path.color1 {
 
 .rhythm-select {
   width: 50px !important;
+  display: inline-block;
 }
 
-.margin-top-20 {
-  margin-top: 20px;
+.form-inline .form-group {
+  display: inline-block;
+  margin-bottom: 0;
+  vertical-align: middle;
+}
+.form-inline .form-control-static {
+  display: inline-block;
 }
