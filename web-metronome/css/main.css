@@ -1,22 +1,32 @@
 html, body {
-  width: 100%;
-  height: 100%;
+  /* width: 100%;
+  height: 100%; */
 }
 
-svg.js-lifegame {
-  /* position: absolute;;
-  top: 0;
-  left: 0;
-
-  width: 100%;
-  height: 100%; */
-
-  z-index: -1000;
+.mainContainer, .mainContainer .row, .mainContainer .col-md-6 {
+  /* height: 100%; */
 }
 
 path.color0 {
   fill: #888;
 }
+
 path.color1 {
   fill: #eee;
+}
+
+.slider {
+  width: 100% !important;
+}
+
+.slider .slider-selection {
+  background: #ccc;
+}
+
+.rhythm-select {
+  width: 50px !important;
+}
+
+.margin-top-20 {
+  margin-top: 20px;
 }
