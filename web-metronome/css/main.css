@@ -2,12 +2,25 @@
   margin-top: 20px;
 }
 
+.js-donuts {
+  position: absolute;
+  top: 0px;
+  left: 0px;
+
+  z-index: -1000;
+}
+
 path.color0 {
   fill: #888;
 }
 
 path.color1 {
   fill: #eee;
+}
+
+.tempo-label {
+  font-size: 72px;
+  font-weight: 200;
 }
 
 .slider {
@@ -28,6 +41,7 @@ path.color1 {
   margin-bottom: 0;
   vertical-align: middle;
 }
+
 .form-inline .form-control-static {
   display: inline-block;
 }

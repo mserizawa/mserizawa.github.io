@@ -12,65 +12,61 @@
     <link rel="stylesheet" href="css/main.css">
   </head>
   <body>
-    <div class="container mainContainer">
+    <div class="container js-main-container">
       <div class="row">
-        <div class="col-md-6">
-          <h1>Web Metronome</h1>
-          <div class="panel panel-default margin-top-20">
-            <div class="panel-body">
-              <h5>Tempo</h5>
-              <input id="tempo-slider" class="slider" data-slider-id='tempo-slider' type="text" data-slider-min="0" data-slider-max="360" data-slider-step="1" data-slider-value="120"/>
+        <div class="col-sm-4 col-sm-offset-4 col-xs-8 col-xs-offset-2">
+          <div class="text-center tempo-label">
+            120
+          </div>
+          <div>
+            <input id="tempo-slider" class="slider" data-slider-id='tempo-slider' type="text" data-slider-min="0" data-slider-max="360" data-slider-step="1" data-slider-value="120"/>
+          </div>
 
-              <h5 class="margin-top-20">Rhythm</h5>
-              <div class="form-inline">
-                <div class="form-group">
-                  <select class="form-control rhythm-select numerator">
-                    <option>1</option>
-                    <option>2</option>
-                    <option>3</option>
-                    <option selected>4</option>
-                    <option>5</option>
-                    <option>6</option>
-                    <option>7</option>
-                    <option>8</option>
-                    <option>9</option>
-                    <option>10</option>
-                    <option>11</option>
-                    <option>12</option>
-                    <option>13</option>
-                    <option>14</option>
-                    <option>15</option>
-                    <option>16</option>
-                  </select>
-                  <p class="form-control-static">/</p>
-                </div>
-                <div class="form-group">
-                  <select class="form-control rhythm-select denominator">
-                    <option>1</option>
-                    <option>2</option>
-                    <option selected>4</option>
-                    <option>6</option>
-                    <option>8</option>
-                    <option>12</option>
-                    <option>16</option>
-                  </select>
-                </div>
-              </div>
-
-              <button class="btn btn-block btn-default margin-top-20 js-toggle-click">
-                Play
-              </button>
+          <div class="form-inline text-center margin-top-20">
+            <div class="form-group">
+              <select class="form-control rhythm-select numerator">
+                <option>1</option>
+                <option>2</option>
+                <option>3</option>
+                <option selected>4</option>
+                <option>5</option>
+                <option>6</option>
+                <option>7</option>
+                <option>8</option>
+                <option>9</option>
+                <option>10</option>
+                <option>11</option>
+                <option>12</option>
+                <option>13</option>
+                <option>14</option>
+                <option>15</option>
+                <option>16</option>
+              </select>
+              <p class="form-control-static">/</p>
+            </div>
+            <div class="form-group">
+              <select class="form-control rhythm-select denominator">
+                <option>1</option>
+                <option>2</option>
+                <option selected>4</option>
+                <option>6</option>
+                <option>8</option>
+                <option>12</option>
+                <option>16</option>
+              </select>
             </div>
           </div>
-        </div>
-        <div class="col-md-6 js-donuts-container">
-          <svg class="js-donuts"></svg>
+
+          <button class="btn btn-block btn-lg btn-default margin-top-20 js-toggle-click">
+            Play
+          </button>
         </div>
       </div>
     </div>
+    <svg class="js-donuts"></svg>
   </body>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/d3/4.12.2/d3.js"></script>
-  <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js"></script>
+  <script src="https://code.jquery.com/jquery-3.2.1.min.js"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-slider/10.0.0/bootstrap-slider.js"></script>
   <script src="js/main.js"></script>
 </html>

@@ -3,18 +3,23 @@ var ti = new Audio('sounds/ti.wav'),
     co = new Audio('sounds/co.wav');
 
 // init slider
-var tempoSlider = $('#tempo-slider').slider();
+var tempoSlider = $('#tempo-slider').slider().on('slide', function() {
+  $('.tempo-label').text($(this).val());
+});
+
+// move js-main-container
+var mainContainer = $('.js-main-container'),
+    adjustValue = ($(window).height() - mainContainer.height()) / 2 - 20;
+mainContainer.animate({ 'margin-top': '+=' + adjustValue + 'px' }, 'slow');
 
 // init d3
-var containerRect = $('.js-donuts-container').width(),
-    width = $('.js-donuts-container').width(),
-    height = width;
+var diameter = Math.min($(window).height(), $(window).width());
 
 var dataset = {
       lower: [0, 1],
       upper: [1, 0]
     },
-    radius = Math.min(width, height) / 2.5,
+    radius = diameter / 2.5,
     pie = d3.pie().sort(null);
 
 var arc = d3.arc()
@@ -22,10 +27,10 @@ var arc = d3.arc()
     .outerRadius(radius);
 
 var svg = d3.select('.js-donuts')
-    .attr('width', width)
-    .attr('height', height)
+    .attr('width', $(window).width())
+    .attr('height', $(window).height())
     .append('g')
-    .attr('transform', 'translate(' + width / 2 + ',' + height / 2 + ')');
+    .attr('transform', 'translate(' + $(window).width() / 2 + ',' + $(window).height() / 2 + ')');
 
 var path = svg.selectAll('path')
     .data(pie(dataset.lower))
