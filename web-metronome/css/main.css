@@ -1,3 +1,7 @@
+body {
+  background-color: #468189;
+}
+
 .margin-top-20 {
   margin-top: 20px;
 }
@@ -11,15 +15,16 @@
 }
 
 path.color0 {
-  fill: #888;
+  fill: #9DBEBB;
 }
 
 path.color1 {
-  fill: #eee;
+  fill: #77ACA2;
 }
 
 .tempo-label {
-  font-size: 72px;
+  color: #eee;
+  font-size: 100px;
   font-weight: 200;
 }
 
@@ -27,13 +32,35 @@ path.color1 {
   width: 100% !important;
 }
 
+.slider .slider-track,
+.slider .slider-track-row,
+.slider .slider-track-high,
 .slider .slider-selection {
-  background: #ccc;
+  border-radius: 2px;
+}
+
+.slider .slider-selection {
+  background: #9DBEBB;
+}
+
+.slider-handle.round {
+  border-radius: 3px;
+  background-color: #F4E9CD;
+  background-image: none;
 }
 
 .rhythm-select {
+  background: transparent;
+  border-color: transparent;
+  box-shadow: none;
+  font-size: 24px;
+
   width: 50px !important;
   display: inline-block;
+}
+
+.rhythm-select, .rhythm-bar {
+  color: #eee;
 }
 
 .form-inline .form-group {
@@ -46,6 +73,27 @@ path.color1 {
   display: inline-block;
 }
 
+.js-toggle-click {
+  color: #031926;
+  background-color: #F4E9CD;
+  border-color: #d0cfb8;
+}
+
+.js-toggle-click:hover,
+.js-toggle-click:focus,
+.js-toggle-click:active {
+  background-color: #dad0b6;
+  border-color: #d0cfb8;
+}
+
+.slider-handle:focus,
+select:focus,
+button:focus {
+  outline: none !important;
+  border-color: transparent !important;
+  box-shadow: none !important;
+}
+
 .background-flush {
   position: absolute;
   top: 0px;
@@ -54,7 +102,7 @@ path.color1 {
   width: 100%;
   height: 100%;
 
-  background-color: #ddd;
+  background-color: #77ACA2;
   z-index: -10000;
 
   display: none;
