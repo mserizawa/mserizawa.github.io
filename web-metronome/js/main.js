@@ -41,7 +41,8 @@ var path = svg.selectAll('path')
 
 // attach button event
 var interval = null,
-    counter = 0;
+    counter = 0,
+    backgroundFlush = $('.background-flush');
 $('.js-toggle-click').on('click', function() {
   if (interval) {
     clearInterval(interval);
@@ -61,6 +62,8 @@ $('.js-toggle-click').on('click', function() {
         co.pause();
         co.currentTime = 0;
         co.play();
+
+        backgroundFlush.show().fadeOut(300);
       } else {
         ti.pause();
         ti.currentTime = 0;

@@ -45,3 +45,17 @@ path.color1 {
 .form-inline .form-control-static {
   display: inline-block;
 }
+
+.background-flush {
+  position: absolute;
+  top: 0px;
+  left: 0px;
+
+  width: 100%;
+  height: 100%;
+
+  background-color: #ddd;
+  z-index: -10000;
+
+  display: none;
+}
