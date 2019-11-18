@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <title></title>
+    <meta charset="utf-8">
+    <meta name="description" content="">
+    <meta name="author" content="Masato SERIZAWA">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/3.7.2/animate.css">
+    <style>
+      .question-chord {
+        font-size: 50vw;
+        font-weight: bold;
+      }
+      .answer-chord {
+        font-size: 15vw;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="container js-main-container">
+      <div class="row">
+        <div class="col-xs-12">
+          <div class="text-center question-chord">
+          </div>
+        </div>
+        <div class="row">
+          <div class="col-xs-6 text-center">
+            4th
+            <div class="answer-chord 4th">
+            </div>
+          </div>
+          <div class="col-xs-6 text-center">
+            5th
+            <div class="answer-chord 5th">
+            </div>
+          </div>
+        </div>
+        <div class="row">
+          <div class="col-xs-12 text-center">
+            Substitute
+            <div class="text-center answer-chord substitute">
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </body>
+  <script src="https://code.jquery.com/jquery-3.2.1.min.js"></script>
+  <script>
+    var CHORDS = [
+      ['C', 'F', 'G', 'Gb/F#'],
+      ['Db/C#', 'Gb/F#', 'Ab', 'G'],
+      ['D', 'G', 'A', 'Ab'],
+      ['Eb', 'Ab', 'Bb', 'A'],
+      ['E', 'A', 'B', 'Bb'],
+      ['F', 'Bb', 'C', 'B'],
+      ['Gb/F#', 'B', 'Db/C#', 'C'],
+      ['G', 'C', 'D', 'Db/C#'],
+      ['Ab', 'Db/C#', 'Eb', 'D'],
+      ['A', 'D', 'E', 'Eb'],
+      ['Bb', 'Eb', 'F', 'E'],
+      ['B', 'E', 'Gb/F#', 'F']
+    ];
+    var currentQuestion = null;
+    var answerCursor = 0;
+
+    function setQuestion() {
+      var newQuestion = CHORDS[Math.floor(Math.random() * Math.floor(CHORDS.length))];
+      answerCursor = 0;
+
+      if (currentQuestion) {
+        $('.question-chord, .answer-chord')
+          .removeClass('animated flipInY bounceIn')
+          .addClass('animated rollOut')
+          .one('animationend', function() {
+            $(this).text('');
+            $(this).removeClass('animated rollOut');
+            currentQuestion = newQuestion;
+            showQuestion(newQuestion[0]);
+          });
+      } else {
+        currentQuestion = newQuestion;
+        showQuestion(newQuestion[0]);
+      }
+    }
+
+    function showQuestion(chord) {
+      $('.question-chord').text(chord).addClass('animated bounceIn');
+    }
+
+    function showAnswer() {
+      answerCursor++;
+      if (answerCursor === 1) {
+        $('.answer-chord.4th').text(currentQuestion[1]).addClass('animated flipInY');
+      } else if (answerCursor === 2) {
+        $('.answer-chord.5th').text(currentQuestion[2]).addClass('animated flipInY');
+      } else if (answerCursor === 3) {
+        $('.answer-chord.substitute').text(currentQuestion[3]).addClass('animated flipInY');
+      } else if (answerCursor === 4) {
+        setQuestion();
+      }
+    }
+
+    $(function() {
+      setQuestion();
+      $('.question-chord').on('click tap', showAnswer);
+    });
+  </script>
+</html>
