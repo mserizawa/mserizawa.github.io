@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <title>Random Notes for Saxophone</title>
+    <meta charset="utf-8">
+    <meta name="description" content="">
+    <meta name="author" content="Masato SERIZAWA">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+  </head>
+  <body>
+    <div id="notes"></div>
+  </body>
+  <script src="abcjs_basic_5.10.3-min.js"></script>
+  <script>
+    var notes = [
+      ["c", "^G", "^F", "_d", "E", "D", "_B", "A", "_e", "g", "^c'", "d'", "_a"],
+      ["f", "G", "F", "e", "_g", "b", "c'", "_b", "a", "d", "_E", "_D", "B"]
+    ];
+    window.ABCJS.renderAbc(
+      'notes',
+      notes.map(line => line.map(n => n + '8')).join('\n'),
+      {
+        responsive: 'resize'
+      }
+    );
+  </script>
+</html>
