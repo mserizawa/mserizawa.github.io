@@ -115,13 +115,14 @@
         }
 
         .tap-hint {
-            position: absolute;
+            position: fixed;
             bottom: 20px;
             left: 50%;
             transform: translateX(-50%);
             color: rgba(255, 255, 255, 0.8);
             font-size: 0.9rem;
             animation: pulse 2s infinite;
+            z-index: 10;
         }
 
         @keyframes pulse {
@@ -153,8 +154,8 @@
                 </div>
             </div>
         </div>
-        <!-- <div class="tap-hint" style="color: #ffffff;">Tap to Flip！</div> -->
     </div>
+    <div class="tap-hint">Tap to Flip!</div>
 
     <script>
         // 会話盛り上げ文字列の配列
