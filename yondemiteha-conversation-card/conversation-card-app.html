@@ -1,0 +1,225 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>会話盛り上げカードアプリ</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Arial', sans-serif;
+            background: linear-gradient(135deg, #1a1a1a 0%, #2d2d2d 50%, #1a1a1a 100%);
+            height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            overflow: hidden;
+        }
+
+        .card-container {
+            width: 90vw;
+            height: 60vh;
+            max-width: 400px;
+            max-height: 600px;
+            position: relative;
+            perspective: 1000px;
+            cursor: pointer;
+        }
+
+        .card {
+            width: 100%;
+            height: 100%;
+            position: relative;
+            transform-style: preserve-3d;
+            transition: transform 0.6s;
+            border-radius: 20px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+        }
+
+        .card.flipped {
+            transform: rotateY(180deg);
+        }
+
+        .card-face {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            backface-visibility: hidden;
+            border-radius: 20px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            font-size: 1.2rem;
+            font-weight: bold;
+            text-align: center;
+            padding: 20px;
+        }
+
+        .card-back {
+            background: linear-gradient(45deg, #e4782f, #eec05e);
+            background-size: 400% 400%;
+            animation: gradientShift 3s ease infinite;
+        }
+
+        .card-back::before {
+            content: '';
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            width: 80px;
+            height: 80px;
+            border: 4px solid rgba(255, 255, 255, 0.8);
+            border-radius: 50%;
+            background: radial-gradient(circle, rgba(255, 255, 255, 0.3) 0%, transparent 70%);
+        }
+
+        .card-back::after {
+            content: '💬';
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            font-size: 3rem;
+            color: rgba(255, 255, 255, 0.9);
+        }
+
+        .card-front {
+            background: linear-gradient(135deg, #ffffff 0%, #f8f9fa 50%, #f8f9fa 100%);
+            color: #333;
+            transform: rotateY(180deg);
+            box-shadow: inset 0 0 20px rgba(0, 0, 0, 0.1);
+        }
+
+        .conversation-text {
+            font-size: 1.4rem;
+            line-height: 1.6;
+            text-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+            animation: fadeIn 0.5s ease-in-out;
+        }
+
+        @keyframes gradientShift {
+            0% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+            100% { background-position: 0% 50%; }
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .tap-hint {
+            position: absolute;
+            bottom: 20px;
+            left: 50%;
+            transform: translateX(-50%);
+            color: rgba(255, 255, 255, 0.8);
+            font-size: 0.9rem;
+            animation: pulse 2s infinite;
+        }
+
+        @keyframes pulse {
+            0%, 100% { opacity: 0.6; }
+            50% { opacity: 1; }
+        }
+
+        @media (max-width: 480px) {
+            .card-container {
+                width: 95vw;
+                height: 70vh;
+            }
+            
+            .conversation-text {
+                font-size: 1.2rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="card-container">
+        <div class="card" id="card">
+            <div class="card-face card-back">
+                <!-- カードの裏面（模様） -->
+            </div>
+            <div class="card-face card-front">
+                <div class="conversation-text" id="conversationText">
+                    <!-- 会話盛り上げ文字列が表示される -->
+                </div>
+            </div>
+        </div>
+        <!-- <div class="tap-hint" style="color: #ffffff;">Tap to Flip！</div> -->
+    </div>
+
+    <script>
+        // 会話盛り上げ文字列の配列
+        const conversationTopics = [
+            "今日の天気はどうでしたか？",
+            "最近ハマっていることはありますか？",
+            "子供の頃の思い出で印象的なものは？",
+            "もし時間旅行ができたら、どの時代に行きたいですか？",
+            "理想の休日の過ごし方は？",
+            "最近読んだ本や観た映画でおすすめは？",
+            "今までで一番楽しかった旅行は？",
+            "もし動物になれるとしたら何になりたいですか？",
+            "最近のニュースで気になったことは？",
+            "今度の週末は何を予定していますか？",
+            "好きな季節とその理由は？",
+            "今までで一番驚いた出来事は？",
+            "もし宝くじで1億円当たったら何をしますか？",
+            "最近学んだことで面白かったことは？",
+            "理想の家はどんな家ですか？",
+            "今までで一番感動した映画は？",
+            "もし一日だけ何でもできるとしたら何をしますか？",
+            "最近の悩みや心配事はありますか？",
+            "今までで一番美味しかった料理は？",
+            "もし過去の自分にアドバイスするとしたら？"
+        ];
+
+        const card = document.getElementById('card');
+        const conversationText = document.getElementById('conversationText');
+        let isFlipped = false;
+
+        // ランダムな会話トピックを選択
+        function getRandomTopic() {
+            const randomIndex = Math.floor(Math.random() * conversationTopics.length);
+            return conversationTopics[randomIndex];
+        }
+
+        // カードをフリップする関数
+        function flipCard() {
+            if (!isFlipped) {
+                // 裏から表へ
+                card.classList.add('flipped');
+                conversationText.textContent = getRandomTopic();
+                isFlipped = true;
+            } else {
+                // 表から裏へ
+                card.classList.remove('flipped');
+                isFlipped = false;
+            }
+        }
+
+        // カードクリックイベント
+        card.addEventListener('click', flipCard);
+
+        // タッチイベント対応（スマホ用）
+        card.addEventListener('touchstart', function(e) {
+            e.preventDefault();
+        });
+
+        card.addEventListener('touchend', function(e) {
+            e.preventDefault();
+            flipCard();
+        });
+
+        // 初期状態でランダムなトピックを設定（表示はされない）
+        conversationText.textContent = getRandomTopic();
+    </script>
+</body>
+</html>
